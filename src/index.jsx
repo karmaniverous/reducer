@@ -3,7 +3,12 @@ import { posix } from 'path';
 import PropTypes from 'prop-types';
 import { createContext, useCallback, useContext, useMemo } from 'react';
 
-export const ReducerContext = createContext({});
+const ReducerContext = createContext({});
+
+export const useReducer = () => {
+  const parentContext = useContext(ReducerContext);
+  return parentContext;
+};
 
 const Reducer = ({
   active: thisActive,
@@ -16,31 +21,31 @@ const Reducer = ({
   updater: thisUpdater,
 }) => {
   const {
-    active: contextActive,
-    reducerPath: contextReducerPath,
-    reduce: contextReduce,
-    state: contextState,
-    updater: contextUpdater,
-  } = useContext(ReducerContext);
+    active: parentActive,
+    reducerPath: parentPath,
+    reduce: parentReduce,
+    state: parentState,
+    updater: parentUpdater,
+  } = useReducer();
 
   const active = useMemo(
-    () => thisActive ?? contextActive,
-    [contextActive, thisActive]
+    () => thisActive ?? parentActive,
+    [parentActive, thisActive]
   );
 
   const reducerPath = useMemo(
-    () => `${contextReducerPath ?? '/'}${name}/`,
-    [contextReducerPath]
+    () => `${parentPath ?? '/'}${name}/`,
+    [parentPath]
   );
 
   const state = useMemo(
-    () => thisState ?? contextState,
-    [contextState, thisState]
+    () => thisState ?? parentState,
+    [parentState, thisState]
   );
 
   const updater = useMemo(
-    () => thisUpdater ?? contextUpdater,
-    [contextUpdater, thisUpdater]
+    () => thisUpdater ?? parentUpdater,
+    [parentUpdater, thisUpdater]
   );
 
   const doUpdate = useCallback(
@@ -145,11 +150,11 @@ const Reducer = ({
 
       doUpdate({ ...state });
 
-      if (contextReduce) contextReduce(getValue('../'));
+      if (parentReduce) parentReduce(getValue('../'));
     },
     [
       active,
-      contextReduce,
+      parentReduce,
       getNode,
       getReduction,
       getValue,
@@ -161,14 +166,14 @@ const Reducer = ({
   );
 
   const remove = useCallback(() => {
-    if (!(active && contextReduce)) return;
+    if (!(active && parentReduce)) return;
 
     const parentValue = getValue('../');
 
     delete parentValue[name];
 
-    contextReduce(parentValue);
-  }, [active, contextReduce, getValue]);
+    parentReduce(parentValue);
+  }, [active, parentReduce, getValue]);
 
   const setValue = useCallback(
     (value, path) => (getNode(path).value = value),
@@ -183,12 +188,12 @@ const Reducer = ({
         getNode,
         getReduction,
         getValue,
-        reducerPath,
         reduce,
+        reducerPath,
         remove,
         setValue,
         state,
-        updater: doUpdate,
+        updater,
       }}
     >
       {render({ addChild, getReduction, getValue, reduce, remove, setValue })}

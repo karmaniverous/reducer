@@ -5,7 +5,7 @@ import Reducer from '../../../src/index';
 import REDUCERS from '../../fixtures/REDUCERS.mjs';
 import TestForm from '../../fixtures/TestForm';
 
-const TrivialHtmlTestForm = ({ ...testFormProps }) => {
+const SimpleHtmlTestForm = ({ ...testFormProps }) => {
   return (
     <TestForm
       {...testFormProps}
@@ -71,4 +71,4 @@ const TrivialHtmlTestForm = ({ ...testFormProps }) => {
   );
 };
 
-export default TrivialHtmlTestForm;
+export default SimpleHtmlTestForm;
