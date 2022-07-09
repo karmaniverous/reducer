@@ -14,6 +14,7 @@ import { encodeReducerData } from '../src';
 // fixture imports
 import SimpleHtmlTestForm from './forms/html/SimpleHtmlTestForm';
 import CompositeHtmlTestForm from './forms/html/composite/CompositeHtmlTestForm';
+import DeepHtmlTestForm from './forms/html/DeepHtmlTestForm';
 // import { inspect } from './fixtures/helpers.mjs';
 
 let getByTestId;
@@ -23,36 +24,42 @@ describe('forms', async () => {
   let decodedStateDiv;
   let encodedStateDiv;
 
+  let initDecodedState;
+  let clearTextInputDecodedState;
+  let clearTextInputEncodedState;
+
   describe('html', async () => {
-    const initDecodedState = {
-      form: { textInput: 'abc', numberInput: '123' },
-    };
+    beforeEach(async () => {
+      initDecodedState = {
+        form: { textInput: 'abc', numberInput: '123' },
+      };
 
-    const clearTextInputDecodedState = {
-      form: { textInput: '', numberInput: '123' },
-    };
+      clearTextInputDecodedState = {
+        form: { textInput: '', numberInput: '123' },
+      };
 
-    const clearTextInputEncodedState = {
-      value: {
-        form: {
-          value: {
-            textInput: {
-              value: '',
-              reductions: {
-                isValid: { value: false, context: { label: 'REQUIRED' } },
+      clearTextInputEncodedState = {
+        value: {
+          form: {
+            value: {
+              textInput: {
+                value: '',
+                reductions: {
+                  isValid: { value: false, context: { label: 'REQUIRED' } },
+                },
               },
+              numberInput: { value: '123' },
             },
-            numberInput: { value: '123' },
-          },
-          reductions: {
-            isValid: {
-              value: false,
-              context: { label: 'ALL_CHILDREN_VALID' },
+            reductions: {
+              isValid: {
+                value: false,
+                context: { label: 'ALL_CHILDREN_VALID' },
+              },
             },
           },
         },
-      },
-    };
+      };
+    });
 
     let textInput;
     let numberInput;
@@ -140,6 +147,40 @@ describe('forms', async () => {
 
         textInput.value.should.equal('');
         numberInput.value.should.equal(initDecodedState.form.numberInput);
+      });
+    });
+
+    describe('deep', async () => {
+      initDecodedState = {
+        form: {
+          sectionA: { textInput: 'abc', numberInput: '123' },
+          sectionB: { textInput: 'def', numberInput: '456' },
+        },
+      };
+
+      let textInputA;
+      let textInputB;
+      let numberInputA;
+      let numberInputB;
+
+      beforeEach(async () => {
+        ({ getByTestId } = render(
+          <DeepHtmlTestForm initDecodedState={initDecodedState} />
+        ));
+
+        textInputA = getByTestId('textInputA');
+        numberInputA = getByTestId('numberInputA');
+
+        textInputB = getByTestId('textInputB');
+        numberInputB = getByTestId('numberInputB');
+      });
+
+      it('passes context correctly', async () => {
+        textInputA.disabled.should.equal(false);
+        numberInputA.disabled.should.equal(false);
+
+        textInputB.disabled.should.equal(true);
+        numberInputB.disabled.should.equal(true);
       });
     });
   });

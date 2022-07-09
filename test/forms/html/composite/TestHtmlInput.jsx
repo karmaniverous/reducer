@@ -5,11 +5,12 @@ import PropTypes from 'prop-types';
 import { useReducer } from '../../../../src';
 
 const TestHtmlInput = ({ id, type }) => {
-  const { getValue, reduce } = useReducer();
+  const { context, getValue, reduce } = useReducer();
 
   return (
     <input
       data-testid={id}
+      disabled={context.disabled}
       type={type}
       value={getValue()}
       onChange={(e) => reduce(e.target.value)}
@@ -18,6 +19,7 @@ const TestHtmlInput = ({ id, type }) => {
 };
 
 TestHtmlInput.propTypes = {
+  disabled: PropTypes.bool,
   id: PropTypes.string,
   type: PropTypes.string,
 };

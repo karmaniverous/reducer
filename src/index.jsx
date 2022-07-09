@@ -12,6 +12,7 @@ export const useReducer = () => {
 
 const Reducer = ({
   active: thisActive,
+  context: thisContext,
   name,
   onAfterReduce,
   onBeforeReduce,
@@ -22,6 +23,7 @@ const Reducer = ({
 }) => {
   const {
     active: parentActive,
+    context: parentContext,
     reducerPath: parentPath,
     reduce: parentReduce,
     state: parentState,
@@ -33,10 +35,18 @@ const Reducer = ({
     [parentActive, thisActive]
   );
 
+  const context = useMemo(
+    () =>
+      Object.assign({ ...(parentContext ?? {}) }, { ...(thisContext ?? {}) }),
+    [parentContext, thisContext]
+  );
+
   const reducerPath = useMemo(
     () => `${parentPath ?? '/'}${name}/`,
     [parentPath]
   );
+
+  console.log(reducerPath, parentContext, thisContext, context);
 
   const state = useMemo(
     () => thisState ?? parentState,
@@ -185,6 +195,7 @@ const Reducer = ({
       value={{
         active,
         addChild,
+        context,
         getNode,
         getReduction,
         getValue,
@@ -196,13 +207,22 @@ const Reducer = ({
         updater,
       }}
     >
-      {render({ addChild, getReduction, getValue, reduce, remove, setValue })}
+      {render({
+        addChild,
+        context,
+        getReduction,
+        getValue,
+        reduce,
+        remove,
+        setValue,
+      })}
     </ReducerContext.Provider>
   );
 };
 
 Reducer.propTypes = {
   active: PropTypes.bool,
+  context: PropTypes.object,
   name: PropTypes.string.isRequired,
   onAfterReduce: PropTypes.func,
   onBeforeReduce: PropTypes.func,
