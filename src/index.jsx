@@ -1,5 +1,5 @@
 // npm imports
-import { resolve } from 'path';
+import { posix } from 'path';
 import PropTypes from 'prop-types';
 import { createContext, useCallback, useContext, useMemo } from 'react';
 
@@ -69,7 +69,8 @@ const Reducer = ({
 
   const getNode = useCallback(
     (path = '') =>
-      resolve(reducerPath, path)
+      posix
+        .resolve(reducerPath, path)
         .split('/')
         .filter((n) => n !== '')
         .reduce(
