@@ -26,17 +26,17 @@ tracked at every node of the hierarchy, including:
 - _valid_ (possibly based on other values across the state)
 - _visited_ (if a node has ever gained focus)
 
-Of course, every use case is a unique flower, and is certainly a case for all
-kinds of reductions we didn't list above.
+Of course, every use case is a unique flower, and there is certainly room for
+all kinds of reductions we didn't list above.
 
 The genesis for this project was a complex form built with
 [Semantic UI React](https://react.semantic-ui.com/) components. We needed lots
 of validation and the Semantic form engine wasn't really up to the task. We
-looked at external for reducer libraries$mdash;notably the very excellent
+looked at external form reducer libraries&mdash;notably the very excellent
 [React Final Form](https://final-form.org/react)&mdash;and were disappointed to
-discover how they played with third-party components like the Semantic library:
-you couldn't seem to get away from having to write an adapter component around
-your components.
+discover how they played with third-party components like the Semantic library.
+You couldn't seem to get away from having to write an adapter around your
+third-party components.
 
 We wanted a reducer that could interact directly with _any_ component, no
 adapters required. We also recognized that form reduction is just one instance
