@@ -46,8 +46,6 @@ const Reducer = ({
     [parentPath]
   );
 
-  console.log(reducerPath, parentContext, thisContext, context);
-
   const state = useMemo(
     () => thisState ?? parentState,
     [parentState, thisState]
@@ -60,7 +58,6 @@ const Reducer = ({
 
   const doUpdate = useCallback(
     (state) => {
-      // console.log('doUpdate', name, state);
       updater(state);
     },
     [updater]
