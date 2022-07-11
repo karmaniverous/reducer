@@ -1,5 +1,5 @@
 // subject imports
-import Reducer from '../../../../src/index';
+import { Reducer } from '../../../../src/index';
 
 // fixture imports
 import REDUCERS from '../../../fixtures/REDUCERS.mjs';
