@@ -4,3 +4,5 @@ export {
   encodeReducerData,
   useReducer,
 } from './Reducer';
+
+export { default as REDUCERS } from './REDUCERS.mjs';

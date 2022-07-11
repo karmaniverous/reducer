@@ -1,8 +1,7 @@
 // subject imports
-import { Reducer } from '../../../src/index';
+import { Reducer, REDUCERS } from '../../../src/index';
 
 // fixture imports
-import REDUCERS from '../../fixtures/REDUCERS.mjs';
 import TestForm from '../../fixtures/TestForm';
 
 const SimpleHtmlTestForm = ({ ...testFormProps }) => {
