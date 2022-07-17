@@ -1,7 +1,7 @@
 {
   "name": "@karmaniverous/reducer",
   "version": "0.2.2",
-  "description": "",
+  "description": "A lightweight, state-engine-agnostic data reducer for for forms or any other React component hierarchy.",
   "main": "lib/index.js",
   "scripts": {
     "build": "babel src -d lib",
